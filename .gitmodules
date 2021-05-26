@@ -1,0 +1,3 @@
+[submodule "hellabot"]
+	path = hellabot
+	url = https://github.com/lunakv/hellabot
