@@ -1,18 +1,15 @@
 {
-    "DSN": "https://sentry.io",
-    "Password": "",
-    "DevMode": true,
+    "DSN": "https://a09abd61b4aa45e09465ca97089e69bb@o713594.ingest.sentry.io/5779411",
+    "Password": "S%D#4U3r2j9PaP2$#HnsvaG5JSCedJwu5gT#@vE8xArobbD65q",
+    "DevMode": false,
     "ProdChannels": [
-        "#magicjudges-policy",
-        "#magicjudges-rules",
-        "#magicjudges",
-        "##mtg"
+		"#vaasatogdev"
     ],
     "DevChannels": [
-        "#frybottest"
+		"#vaasatogdev"
     ],
-    "ProdNick": "Fryatog",
-    "DevNick": "Fryatog-Dev",
+    "ProdNick": "vaasatog",
+    "DevNick": "vaasatog-Dev",
     "SlackTokens": [
         ""
      ],
@@ -40,5 +37,5 @@
         ]
     },
     "IRC": true,
-    "Slack": true
+    "Slack": false 
 }

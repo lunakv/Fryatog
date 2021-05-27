@@ -727,7 +727,7 @@ func main() {
 		}
 		whichChans = conf.DevChannels
 		whichNick = conf.DevNick
-		nonSSLServ := flag.String("server", "irc.freenode.net:6667", "hostname and port for irc server to connect to")
+		nonSSLServ := flag.String("server", "irc.libera.chat:6667", "hostname and port for irc server to connect to")
 		nick := flag.String("nick", conf.DevNick, "nickname for the bot")
 		bot, err = hbot.NewBot(*nonSSLServ, *nick, hijackSession, devChannels, noSSLOptions, timeOut)
 
@@ -737,7 +737,7 @@ func main() {
 	} else {
 		whichChans = conf.ProdChannels
 		whichNick = conf.ProdNick
-		sslServ := flag.String("server", "irc.freenode.net:6697", "hostname and port for irc server to connect to")
+		sslServ := flag.String("server", "irc.libera.chat:6697", "hostname and port for irc server to connect to")
 		nick := flag.String("nick", conf.ProdNick, "nickname for the bot")
 		bot, err = hbot.NewBot(*sslServ, *nick, noHijackSession, prodChannels, yesSSLOptions, saslOptions, timeOut)
 
