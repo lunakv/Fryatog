@@ -7,3 +7,4 @@ config.json*
 *.exe
 [fF]ryatog
 vendor/*
+config.json
