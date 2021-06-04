@@ -8,3 +8,4 @@ config.json*
 [fF]ryatog
 vendor/*
 config.json
+.idea/
