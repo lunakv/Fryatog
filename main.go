@@ -31,8 +31,8 @@ type configuration struct {
 	Password     string   `json:"Password"`
 	DevMode      bool     `json:"DevMode"`
 	Server       struct {
-		SSL 	string `json:SSL`
-		NonSSL  string `json:NonSSL`
+		SSL      string `json:"SSL"`
+		NonSSL   string `json:"NonSSL"`
 	}
 	ProdChannels []string `json:"ProdChannels"`
 	DevChannels  []string `json:"DevChannels"`
@@ -102,9 +102,8 @@ var (
 	wowChieves           *wowgd.AchievementIndex
 )
 
-// Is there a stable URL that always points to a text version of the most up to date CR ?
-// Fuck it Volo will do it
-const crURL = "http://cr.vensersjournal.com"
+// a stable URL that always points to a text version of the most up to date CR
+const crURL = "https://api.academyruins.com/link/cr"
 const crFile = "CR.txt"
 const cardCacheGob = "cardcache.gob"
 const configFile = "config.json"

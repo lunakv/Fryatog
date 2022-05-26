@@ -37,7 +37,7 @@ var (
 
 	ruleParseRegex = regexp.MustCompile(`^(?P<ruleno>\d+\.\w{1,4})\.? (?P<ruletext>.*)`)
 
-	seeRuleRegexp = regexp.MustCompile(`See rule (\d+\.{0,1}\d*\w?)`)
+	seeRuleRegexp = regexp.MustCompile(`rule (\d+\.{0,1}\d*\w?)`)
 
 	noPunctuationRegex = regexp.MustCompile(`\W$`)
 
@@ -103,6 +103,16 @@ func stringSliceContains(s []string, e string) bool {
 		}
 	}
 	return false
+}
+
+func removeEmptyStrings(s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
 }
 
 func wordWrap(text string, lineWidth int) string {
