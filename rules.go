@@ -78,7 +78,7 @@ func findRule(input string, which string) (Rule, error) {
 		return Rule{}, errors.New("Unknown mode")
 	}
 
-	url := endpoint + input
+	url := endpoint + input + "?find_definition=true"
 	log.Debug("findRule: Attempting to fetch", "URL", url)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -149,7 +149,7 @@ func handleGlossaryQuery(input string) string {
 	log.Debug("In handleGlossaryQuery", "Define matched on", split)
 	query := TryCoerceGlossaryQuery(strings.ToLower(split[1]))
 
-	url := glossaryEndpointURL + query
+	url := glossaryEndpointURL + query + "?fuzzy=true"
 	log.Debug("findGlossary: Attempting to fetch", "URL", url)
 	resp, err := http.Get(url)
 	if err != nil {

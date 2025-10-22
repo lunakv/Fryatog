@@ -6,7 +6,6 @@ import (
 	"expvar"
 	"flag"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -161,7 +160,7 @@ func printHelp() string {
 	ret = append(ret, "!uncard/vanguard/plane/scheme <cardname> to bring up normally filtered out cards")
 	ret = append(ret, "!url <mtr/ipg/cr/jar> to bring up the links to policy documents")
 	ret = append(ret, "!roll <X> to roll X-sided die; !roll <XdY> to roll X Y-sided dice")
-	ret = append(ret, "!coin to flip a coin (heads/tails)")
+	ret = append(ret, "!coin to flip a coin (heads/tails); !coin <X> to flip X coins")
 	ret = append(ret, "https://github.com/Fryyyyy/Fryatog/issues for bugs & feature requests")
 	return strings.Join(ret, " · ")
 }
@@ -308,7 +307,7 @@ func tokeniseAndDispatchInput(fp *fryatogParams, cardGetFunction CardGetter, dum
 		// Last time it bit us, the query '!ruling kozilek the great distortion 1'
 		// was getting chopped off because we had this capped at 35.
 		// Maybe look for some way to make this more robust and Actually Programmatic.
-		if !strings.HasPrefix(message, "search ") && !strings.HasPrefix(message, "wow") && len(message) > 41 {
+		if !strings.HasPrefix(message, "search ") && !strings.HasPrefix(message, "random ") && !strings.HasPrefix(message, "wow") && len(message) > 41 {
 			message = message[0:41]
 		}
 
@@ -434,9 +433,9 @@ func handleCommand(params *fryatogParams, c chan string) {
 		c <- rollDice(message)
 		return
 
-	case message == "coin":
+	case coinRegex.MatchString(message):
 		log.Debug("Coin flip")
-		c <- flipCoin()
+		c <- flipCoin(message)
 		return
 
 	case ruleRegexp.MatchString(message),
@@ -706,9 +705,6 @@ func main() {
 	}
 
 	ctx = context.Background()
-
-	// Seed random number generator
-	rand.Seed(time.Now().UnixNano())
 
 	hijackSession := func(bot *hbot.Bot) {
 		bot.HijackSession = true

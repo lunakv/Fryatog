@@ -27,7 +27,8 @@ var (
 	wordEndingInBang     = regexp.MustCompile(`!["'] |\n+`)
 	wordStartingWithBang = regexp.MustCompile(`\s+! *\S+`)
 
-	diceRegex = regexp.MustCompile(`^(?:roll )?\s*(.*?)d(\d+)([+-]\d+)?`)
+	coinRegex = regexp.MustCompile(`^coin(?:\s+(\d+))?`)
+	diceRegex = regexp.MustCompile(`^(?:roll\s+)?(\d*)d(\d+)([+-]\d+)?`)
 
 	cardMetadataRegex = regexp.MustCompile(`(?i)^(?:rulings?|reminder|flavou?r) `)
 
@@ -211,11 +212,14 @@ func cappedMin(a, b, c int) int {
 }
 
 func readConfig() configuration {
-	file, _ := os.Open(configFile)
+	file, err := os.Open(configFile)
+	if err != nil {
+		panic(err)
+	}
 	defer file.Close()
 	decoder := json.NewDecoder(file)
 	conf := configuration{}
-	err := decoder.Decode(&conf)
+	err = decoder.Decode(&conf)
 	if err != nil {
 		panic(err)
 	}

@@ -20,11 +20,11 @@ type Roll struct {
 
 func (d Roll) calculate() string {
 	if d.sides == 0 {
-		return fmt.Sprintf("1 %d-sided die: %d", d.number, rand.Intn(d.number-1)+1)
+		return fmt.Sprintf("1 %d-sided die: %d", d.number, rand.Intn(d.number)+1)
 	}
 	var result int
 	for i := 1; i <= d.number; i++ {
-		result += rand.Intn(d.sides-1) + 1
+		result += rand.Intn(d.sides) + 1
 	}
 
 	if d.operand != 0 {
@@ -118,9 +118,58 @@ func validateDice(input string, dice []string) (Roll, error) {
 	return wellFormedDice, nil
 }
 
-func flipCoin() string {
-	coin := []string{"Heads", "Tails"}
-	side := coin[rand.Intn(len(coin))]
+func flipCoin(input string) string {
+	coinCount, err := parseCoinCount(input)
+	if err != nil {
+		return err.Error()
+	}
 
-	return fmt.Sprintf("%s.", side)
+	flips := make([]int, coinCount)
+	for i := 0; i < coinCount; i++ {
+		flips[i] = rand.Intn(2)
+	}
+	return formatFlips(flips, coinCount)
 }
+
+func parseCoinCount(input string) (int, error) {
+	coinMaximum := 50
+
+	coins := coinRegex.FindStringSubmatch(input)
+	if coins[1] == "" {
+		// no number specified - implicit one flip
+		return 1, nil
+	}
+
+	numCoins, err := strconv.Atoi(coins[1])
+	if err != nil {
+		return 0, errors.New("malformed coin toss")
+	}
+
+	if numCoins > coinMaximum {
+		return 0, errors.New("malformed coin toss (max count is 50)")
+	}
+	if numCoins < 1 {
+		return 0, errors.New("malformed coin toss (min count is 1)")
+	}
+	return numCoins, nil
+}
+
+func formatFlips(flips []int, count int) string {
+	prefix := ""
+	coinNames := []string{"Heads", "Tails"}
+	joiner := ", "
+	if count > 5 {
+		prefix = fmt.Sprintf("%d coins: ", count)
+		coinNames = []string{"H", "T"}
+		joiner = ""
+	}
+
+	formatted := make([]string, len(flips))
+	for i := 0; i < len(formatted); i++ {
+		formatted[i] = coinNames[flips[i]]
+	}
+
+	return fmt.Sprintf("%s%s.", prefix, strings.Join(formatted, joiner))
+}
+
+
